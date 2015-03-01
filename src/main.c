@@ -15,7 +15,7 @@ static void tickHandler(struct tm *tick_time, TimeUnits unit_change){
   update_time();
 }
 static void update_time(){
-static char buf[] = "00:00"; //the buffer we use to display the time, static so it lasts through more than one call
+static char buf[] = "00:00 pm"; //the buffer we use to display the time, static so it lasts through more than one call
 static char datebuf[] = "00/00/00"; //the buffer to display the date
 static char daybuf[] = "WEDNESDAY";
   
@@ -27,7 +27,7 @@ static char daybuf[] = "WEDNESDAY";
   if(clock_is_24h_style() == true){
     strftime(buf, sizeof("00:00"), "%H:%M",tick_time);
   }else{
-    strftime(buf,sizeof("00:00"), "%I:%M",tick_time);
+    strftime(buf,sizeof("00:00pm"), "%I:%M%p",tick_time);
   }
   
   //update the date
