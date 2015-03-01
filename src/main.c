@@ -2,6 +2,7 @@
 
 static Window *s_main_window; //the main screen of the watchface s_ stands for static
 static TextLayer *s_time_layer; //the text we will use to display the time
+static TextLayer *s_date_layer; //the text to display the date
 static GFont *s_time_font;  // the font for the clock
 static BitmapLayer *s_background_layer;
 static GBitmap *s_background_bitmap;
@@ -14,6 +15,7 @@ static void tickHandler(struct tm *tick_time, TimeUnits unit_change){
 }
 static void update_time(){
 static char buf[] = "00:00"; //the buffer we use to display the time, static so it lasts through more than one call
+static char datebuf[] = "00/00/00"; //the buffer to display the date
   
   //get the tm struct
   time_t temp = time(NULL);
@@ -26,7 +28,12 @@ static char buf[] = "00:00"; //the buffer we use to display the time, static so 
     strftime(buf,sizeof("00:00"), "%I:%M",tick_time);
   }
   
+  //update the date
+  strftime(datebuf, sizeof("00/00/00"), "%D", tick_time);
+  
+  //set the text to the date
   text_layer_set_text(s_time_layer,buf);
+  text_layer_set_text(s_date_layer,datebuf);
 }
 
 //load the data for the window
@@ -38,18 +45,31 @@ static void loadWindow(Window *window){
   layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(s_background_layer)); //add the layer to the watchface
   
   //load the time text layer
-  s_time_layer = text_layer_create(GRect(20, 40, 115, 40)); //initializes a new text layer
+  s_time_layer = text_layer_create(GRect(20, 40, 115, 38)); //initializes a new text layer
   text_layer_set_background_color(s_time_layer, GColorWhite);
   text_layer_set_text_color(s_time_layer, GColorBlack);
+  
+  //load the date text layer
+  s_date_layer = text_layer_create(GRect(21, 85, 115, 38)); //initializes a new text layer
+  text_layer_set_background_color(s_date_layer, GColorWhite);
+  text_layer_set_text_color(s_date_layer, GColorBlack);
+ 
  
   //load the custom font
   s_time_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_KINDERGARTEN_30));
   
   //set it as the text font
+  //for the time
   text_layer_set_font(s_time_layer, s_time_font);
   text_layer_set_text_alignment(s_time_layer, GTextAlignmentCenter);
   
-  layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_time_layer)); //add the layer to the watchface
+  //and for the date
+  text_layer_set_font(s_date_layer, s_time_font);
+  text_layer_set_text_alignment(s_date_layer, GTextAlignmentCenter);
+  
+  layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_time_layer)); //add the time layer to the watchface
+  
+  layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_date_layer)); //add the date layer to the watchface
 
 }
 
@@ -62,6 +82,7 @@ static void unloadWindow(Window *window){
   
   //unload the custom font
   fonts_unload_custom_font(s_time_font);
+  text_layer_destroy(s_date_layer); //free the memory from the date layer
   text_layer_destroy(s_time_layer); //free the memory from the time layer
 }
 
