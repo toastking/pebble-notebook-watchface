@@ -1,0 +1,41 @@
+{
+    "appKeys": {},
+    "capabilities": [
+        ""
+    ],
+    "companyName": "mattdelsig@me.com",
+    "longName": "Watchface",
+    "projectType": "native",
+    "resources": {
+        "media": [
+            {
+                "file": "fonts/kindergarten.ttf",
+                "name": "KINDERGARTEN_30",
+                "type": "font"
+            },
+            {
+                "file": "images/Pebble.png",
+                "name": "NOTEBOOK",
+                "type": "png"
+            },
+            {
+                "file": "fonts/VCR.ttf",
+                "name": "VCR_40",
+                "type": "font"
+            },
+            {
+                "file": "fonts/FunSized.ttf",
+                "name": "FUNSIZED_24",
+                "type": "font"
+            }
+        ]
+    },
+    "sdkVersion": "2",
+    "shortName": "Watchface",
+    "uuid": "491051ad-9e46-4cc6-9f7d-d26e0ed26070",
+    "versionCode": 1,
+    "versionLabel": "1.0",
+    "watchapp": {
+        "watchface": true
+    }
+}
